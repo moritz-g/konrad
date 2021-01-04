@@ -43,6 +43,7 @@ class RCE:
         outfile=None,
         experiment='RCE',
         writeevery='24h',
+        writefor=None,
         delta=0.0,
         radiation=None,
         ozone=None,
@@ -86,6 +87,16 @@ class RCE:
                 * str: a timedelta string (see :func:`konrad.utils.parse_fraction_of_day`).
                 * A `timedelta` object is directly used as timestep.
                 * Note: Setting a value of `"0h"` will write after every iteration.
+
+            writefor (None, float, str or timedelta): whenever the writing
+                function is triggered because of 'writeevery', it will also be
+                triggered for the next 'writefor' days
+
+                * None: disable this functionality
+                * float: for n days
+                * str: a timedelta string (see :func:`konrad.utils.parse_fraction_of_day`).
+                * A `timedelta` object is directly used as timestep.
+                Defaults to None
 
             delta (float): Stop criterion. If the heating rate is below this
                 threshold for all levels, skip further iterations. Values
@@ -174,6 +185,8 @@ class RCE:
         self.writeevery = utils.parse_fraction_of_day(writeevery)
         self.last_written = self.time
 
+        self.writefor = utils.parse_fraction_of_day(writefor)
+
         self.logevery = logevery
 
         self.delta = delta
@@ -241,10 +254,11 @@ class RCE:
         """
         if self.outfile is None:
             return False
-
         if ((self.time - self.last_written) >= self.writeevery
            or self.time == datetime.datetime(1, 1, 1)):
             self.last_written = self.time
+            return True
+        if (self.writefor and self.time - self.last_written < self.writefor):
             return True
         else:
             return False
