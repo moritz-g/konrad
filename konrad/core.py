@@ -92,6 +92,7 @@ class RCE:
                 * Note: Setting a value of `"0h"` will write after every iteration.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             delta (float): First stop criterion. If the change in top-of-the-atmosphere
                 radiative balance is smaller than this threshold,
                 skip further iterations. Values are given in W/m^2/day.
@@ -103,6 +104,8 @@ class RCE:
             post_count (float): Numbers of days that the convergence criterion
                 (see `delta` and `delta2`) has to be fulfilled to stop the simulation.
 =======
+=======
+>>>>>>> aa5f33989dc522364e670ff2b8ccd5d7eee3db3f
             writefor (None, float, str or timedelta): whenever the writing
                 function is triggered because of 'writeevery', it will also be
                 triggered for the next 'writefor' days
@@ -229,6 +232,8 @@ class RCE:
         self.last_written = self.time
 <<<<<<< HEAD
 =======
+
+        self.writefor = utils.parse_fraction_of_day(writefor)
 
         self.writefor = utils.parse_fraction_of_day(writefor)
 
@@ -366,11 +371,14 @@ class RCE:
         if self.outfile is None:
             return False
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         if (
             self.time - self.last_written
         ) >= self.writeevery or self.time == datetime.datetime(1, 1, 1):
 =======
+=======
+>>>>>>> aa5f33989dc522364e670ff2b8ccd5d7eee3db3f
         if ((self.time - self.last_written) >= self.writeevery
            or self.time == datetime.datetime(1, 1, 1)):
 >>>>>>> aa5f339 (Improve writing for diurnal cycle)
